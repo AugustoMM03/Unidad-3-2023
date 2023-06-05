@@ -1,0 +1,50 @@
+    def eliminarPorAtributo(self, atributo):
+        aux = self.__comienzo
+        encontrado = False
+        if aux.getDato().getAtributo() == atributo:
+            print("Encontrado: " + str(aux.getDato()))
+            self.__comienzo = aux.getSiguiente()
+            del aux
+        else:
+            ant = aux
+            aux = aux.getSiguiente()
+            while not encontrado and aux != None:
+                if aux.getDato().getAtributo == atributo:
+                    encontrado = True
+                else:
+                    ant = aux
+                    aux = aux.getSiguiente()
+
+            if encontrado:
+                print("Encontrado: "+str(aux.getDato()))
+                ant.setSiguiente(aux.getSiguiente())
+            else:
+                print("El atributo {}, no esta en la lista".format(atributo))
+
+    
+    def cargarLista(self):
+
+       archivo = open('vehiculos.json')
+       data = json.load(archivo)
+
+        for item in data:
+            tipo = str(item["tipo"])
+            marca = str(item["marca"])
+            modelo = str(item["modelo"])
+            puertas = int(item["cantidadpuertas"])
+            color = str(item["color"])
+            precio = int(item["preciobase"])
+
+            if tipo == "nuevo":
+                version = str(item["version"])
+                vehiculo = Nuevo(modelo,puertas,color,precio,marca,version)
+                self.__listaVehiculos.agregarVehiculo(vehiculo)
+
+            elif tipo == 'usado':
+                patente = str(item["patente"])
+                anio = int(item["anio"])
+                kms = int(item["kilometraje"])
+                vehiculo = Usado(modelo,puertas,color,precio,marca, patente, anio, kms)
+                self.__listaVehiculos.agregarVehiculo(vehiculo)
+
+        archivo.close
